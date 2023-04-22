@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -24,6 +24,50 @@ const removeCartItem = (cartItems, productToRemove) => {
   return result;
 };
 
+
+const CART_ACTION_TYPE = {
+  SET_CART_OPEN: "SET_CART_OPEN",
+  ADD_ITEM_TO_CART: "ADD_ITEM_TO_CART",
+  REMOVE_ITEM_FROM_CART: "REMOVE_ITEM_FROM_CART",
+  DISCARD_ITEM: "DISCARD_ITEM",
+};
+
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case CART_ACTION_TYPE.SET_CART_OPEN:
+      return {
+        ...state,
+        isCartOpen: payload,
+      };
+    case CART_ACTION_TYPE.ADD_ITEM_TO_CART:
+      return {
+        ...state,
+        cartItems: addCartItem(state.cartItems, payload),
+      };
+    case CART_ACTION_TYPE.REMOVE_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: removeCartItem(state.cartItems, payload),
+      };
+    case CART_ACTION_TYPE.DISCARD_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          (cartItem) => cartItem.id !== payload.id
+        ),
+      };
+    default:
+      throw new Error(`Invalid action type: ${type}`);
+  }
+};
+
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartItems: [],
+};
+
+
 const defaultState = {
   isCartOpen: false,
   setIsCartOpen: () => {},
@@ -36,21 +80,32 @@ const defaultState = {
 export const CartContext = createContext(defaultState);
 
 export const CartContextProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+  const { isCartOpen, cartItems } = state;
+
+  const setIsCartOpen = (isOpen) => {
+    dispatch({ type: CART_ACTION_TYPE.SET_CART_OPEN, payload: isOpen });
+  };
 
   const addItemToCart = (productToAdd) => {
-    setCartItems(addCartItem(cartItems, productToAdd));
+    dispatch({
+      type: CART_ACTION_TYPE.ADD_ITEM_TO_CART,
+      payload: productToAdd,
+    });
   };
 
   const removeItemFromCart = (productToRemove) => {
-    setCartItems(removeCartItem(cartItems, productToRemove));
+    dispatch({
+      type: CART_ACTION_TYPE.REMOVE_ITEM_FROM_CART,
+      payload: productToRemove,
+    });
   };
 
   const discardItem = (productToRemove) => {
-    setCartItems(
-      cartItems.filter((cartItem) => cartItem.id !== productToRemove.id)
-    );
+    dispatch({
+      type: CART_ACTION_TYPE.DISCARD_ITEM,
+      payload: productToRemove,
+    });
   };
 
   return (
