@@ -1,23 +1,21 @@
 import { useId } from "react";
 
-import "./form-input.styles.scss";
+import {
+  Group,
+  FormInputField,
+  FormInputLabel,
+  ShrinkLabel,
+} from "./form-input.styles";
 
 const FormInput = ({ label, ...otherProps }) => {
   const inputId = useId();
+
+  const LabelComponent = otherProps.value.length ? ShrinkLabel : FormInputLabel;
   return (
-    <div className="group">
-      <input className="form-input" id={inputId} {...otherProps} />
-      {label && (
-        <label
-          className={`${
-            otherProps.value.length ? "shrink" : ""
-          } form-input-label`}
-          htmlFor={inputId}
-        >
-          {label}
-        </label>
-      )}
-    </div>
+    <Group>
+      <FormInputField id={inputId} {...otherProps} />
+      {label && <LabelComponent htmlFor={inputId}>{label}</LabelComponent>}
+    </Group>
   );
 };
 

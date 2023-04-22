@@ -1,4 +1,13 @@
-import "./checkout-item.styles.scss";
+import {
+  CheckoutItemContainer,
+  ImageContainer,
+  Img,
+  Name,
+  Quantity,
+  Price,
+  RemoveButton,
+  Button,
+} from "./checkout-item.styles.jsx";
 
 const CheckoutItem = ({
   cartItem,
@@ -8,21 +17,21 @@ const CheckoutItem = ({
 }) => {
   const { name, imageUrl, price, quantity } = cartItem;
   return (
-    <div className="checkout-item-container">
-      <div className="image-container">
-        <img src={imageUrl} alt={name} />
-      </div>
-      <span className="name">{name}</span>
-      <span className="quantity">
-        <button onClick={() => removeItemFromCart(cartItem)}>-</button>
+    <CheckoutItemContainer>
+      <ImageContainer>
+        <Img src={imageUrl} alt={name} />
+      </ImageContainer>
+      <Name>{name}</Name>
+      <Quantity>
+        <Button onClick={() => removeItemFromCart(cartItem)}>-</Button>
         {quantity}
-        <button onClick={() => addItemToCart(cartItem)}>+</button>
-      </span>
-      <span className="price">${price}</span>
-      <div className="remove-button">
-        <button onClick={() => discardItem(cartItem)}>&#10005;</button>
-      </div>
-    </div>
+        <Button onClick={() => addItemToCart(cartItem)}>+</Button>
+      </Quantity>
+      <Price>${price}</Price>
+      <RemoveButton>
+        <Button onClick={() => discardItem(cartItem)}>&#10005;</Button>
+      </RemoveButton>
+    </CheckoutItemContainer>
   );
 };
 
