@@ -14,16 +14,12 @@ import {
   HeaderBlock,
   Total,
 } from "./checkout.styles";
-import { selectCart } from "../../store/cart/cart.selector";
+import { selectCart, selectCartTotal } from "../../store/cart/cart.selector";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCart);
-
-  const total = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const total = useSelector(selectCartTotal);
   return (
     <CheckoutContainer>
       <CheckoutHeader>
@@ -49,9 +45,11 @@ const Checkout = () => {
           <CheckoutItem
             key={id}
             cartItem={cartItem}
-            addItemToCart={(item) => dispatch(addCartItem(item))}
-            removeItemFromCart={(item) => dispatch(removeCartItem(item))}
-            discardItem={(item) => dispatch(discardItem(item))}
+            addItemToCart={(item) => dispatch(addCartItem(cartItems, item))}
+            removeItemFromCart={(item) =>
+              dispatch(removeCartItem(cartItems, item))
+            }
+            discardItem={(item) => dispatch(discardItem(cartItems, item))}
           />
         );
       })}
