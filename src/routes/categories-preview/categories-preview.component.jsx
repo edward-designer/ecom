@@ -11,16 +11,18 @@ import { Spinner } from "../../components/spinner/spinner.component";
 const CategoriesPreview = () => {
   const categoriesMap = useSelector(selectCategoriesMap);
   const isLoading = useSelector(selectCategoriesIsLoading);
-  return isLoading ? (
-    <Spinner />
-  ) : (
+  return (
     <>
-      {Object.keys(categoriesMap).map((title) => {
-        const products = categoriesMap[title];
-        return (
-          <CategoryPreview key={title} title={title} products={products} />
-        );
-      })}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        Object.keys(categoriesMap).map((title) => {
+          const products = categoriesMap[title];
+          return (
+            <CategoryPreview key={title} title={title} products={products} />
+          );
+        })
+      )}
     </>
   );
 };
