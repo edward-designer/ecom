@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CartItem from "../cart-item/cart-item.component";
 
 import { selectCart } from "../../store/cart/cart.selector";
-import { setIsCartOpen } from "../../store/cart/cart.action";
+import { setIsCartOpen } from "../../store/cart/cart.slice";
 
 import {
   CartDropdownContainer,

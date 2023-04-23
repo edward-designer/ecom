@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addCartItem,
   removeCartItem,
-  discardItem,
-} from "../../store/cart/cart.action";
+  discardCartItem,
+} from "../../store/cart/cart.slice";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
@@ -45,11 +45,9 @@ const Checkout = () => {
           <CheckoutItem
             key={id}
             cartItem={cartItem}
-            addItemToCart={(item) => dispatch(addCartItem(cartItems, item))}
-            removeItemFromCart={(item) =>
-              dispatch(removeCartItem(cartItems, item))
-            }
-            discardItem={(item) => dispatch(discardItem(cartItems, item))}
+            addItemToCart={(item) => dispatch(addCartItem(item))}
+            removeItemFromCart={(item) => dispatch(removeCartItem(item))}
+            discardItem={(item) => dispatch(discardCartItem(item))}
           />
         );
       })}

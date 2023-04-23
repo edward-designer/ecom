@@ -1,24 +1,9 @@
-import { createAction } from "../../utils/reducer/reducer.utils";
+import { createSlice } from "@reduxjs/toolkit";
 
-import { CART_ACTION_TYPES } from "./cart.types";
-
-export const addCartItem = (cartItems, item) => {
-  const newCartItems = addCartItemAction(cartItems, item);
-  return createAction(CART_ACTION_TYPES.ADD_ITEM_TO_CART, newCartItems);
+const INITIAL_STATE = {
+  cartItems: [],
+  isCartOpen: false,
 };
-
-export const removeCartItem = (cartItems, item) => {
-  const newCartItems = removeCartItemAction(cartItems, item);
-  return createAction(CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART, newCartItems);
-};
-
-export const discardItem = (cartItems, item) => {
-  const newCartItems = discardCartItemAction(cartItems, item);
-  return createAction(CART_ACTION_TYPES.DISCARD_ITEM, newCartItems);
-};
-
-export const setIsCartOpen = (bool) =>
-  createAction(CART_ACTION_TYPES.SET_CART_OPEN, bool);
 
 const addCartItemAction = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -47,3 +32,26 @@ const removeCartItemAction = (cartItems, productToRemove) => {
 const discardCartItemAction = (cartItems, productToDiscard) => {
   return cartItems.filter((cartItem) => cartItem.id !== productToDiscard.id);
 };
+
+export const cartSlice = createSlice({
+  name: "cart",
+  initialState: INITIAL_STATE,
+  reducers: {
+    addCartItem(state, action) {
+      state.cartItems = addCartItemAction(state.cartItems, action.payload);
+    },
+    removeCartItem(state, action) {
+      state.cartItems = removeCartItemAction(state.cartItems, action.payload);
+    },
+    discardCartItem(state, action) {
+      state.cartItems = discardCartItemAction(state.cartItems, action.payload);
+    },
+    setIsCartOpen(state, action) {
+      state.isCartOpen = action.payload;
+    },
+  },
+});
+
+export const { addCartItem, removeCartItem, discardCartItem, setIsCartOpen } =
+  cartSlice.actions;
+export const cartReducer = cartSlice.reducer;

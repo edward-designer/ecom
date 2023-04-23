@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectCart } from "../../store/cart/cart.selector";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 
-import { setIsCartOpen } from "../../store/cart/cart.action";
+import { setIsCartOpen } from "../../store/cart/cart.slice";
 
 import {
   CartIconContainer,

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { Routes, Route } from "react-router-dom";
 
-import { fetchCategoriesAsync } from "../../store/categories/categories.action";
+import { fetchCategoriesAsync } from "../../store/categories/categories.slice";
 import CategoriesPreview from "../categories-preview/categories-preview.component";
 import Category from "../category/category-component";
 
