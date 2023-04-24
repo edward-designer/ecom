@@ -15,6 +15,7 @@ import {
   Total,
 } from "./checkout.styles";
 import { selectCart, selectCartTotal } from "../../store/cart/cart.selector";
+import PaymentForm from "../../components/payment-form/payment-form.component";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const Checkout = () => {
         );
       })}
       <Total>Total: ${total}</Total>
+      <PaymentForm />
     </CheckoutContainer>
   );
 };
